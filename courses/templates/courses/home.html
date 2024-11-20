@@ -1,0 +1,45 @@
+<!-- courses/templates/courses/home.html -->
+{% extends 'courses/layout.html' %}
+
+{% block title %}Welcome to Studdy{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="jumbotron text-center">
+        <h1 class="display-4">Welcome to Studdy</h1>
+        <p class="lead">An interactive platform for students and teachers to engage in dynamic learning.</p>
+        <hr class="my-4">
+        <p>Join us today to access courses, connect with teachers, and improve your knowledge.</p>
+        <a class="btn btn-primary btn-lg" href="{% url 'register' %}" role="button">Register Now</a>
+        <a class="btn btn-secondary btn-lg" href="{% url 'login' %}" role="button">Login</a>
+    </div>
+
+    <!-- Основные функции платформы -->
+    <div class="row mt-5">
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Interactive Courses</h5>
+                    <p class="card-text">Access a wide range of interactive courses designed to enhance your learning experience.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Personalized Timetable</h5>
+                    <p class="card-text">Stay organized with your own personalized timetable and never miss a class.</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">Connect with Teachers</h5>
+                    <p class="card-text">Get direct support from teachers and engage in meaningful discussions.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

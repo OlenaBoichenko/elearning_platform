@@ -1,0 +1,30 @@
+/* static/css/style.css */
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f8f9fa;
+}
+
+.sidebar {
+    width: 250px;
+    min-height: 100vh;
+}
+
+.sidebar .nav-link {
+    color: #000;
+    font-weight: bold;
+}
+
+.sidebar .nav-link.active {
+    background-color: #007bff;
+    color: #fff;
+}
+
+.content {
+    flex-grow: 1;
+    padding: 20px;
+}
+
+.header {
+    padding: 40px;
+}

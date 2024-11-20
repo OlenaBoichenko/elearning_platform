@@ -6,6 +6,10 @@ from django import forms
 from django.contrib.auth.models import Group, User
 from .models import Course
 
+def home(request):
+    # Представление для начальной публичной страницы
+    return render(request, 'courses/home.html')
+
 def course_list(request):
     courses = Course.objects.all()
     is_instructor = request.user.groups.filter(name='Teachers').exists() if request.user.is_authenticated else False
@@ -41,7 +45,7 @@ def login_view(request):
 
 def logout_view(request):
     logout(request)
-    return redirect('course_list')
+    return redirect('home')
 
 class CustomUserCreationForm(UserCreationForm):
     ROLE_CHOICES = (
@@ -73,7 +77,21 @@ def register(request):
 def is_instructor(user):
     return user.groups.filter(name='Teachers').exists()
 
+
+class CourseCreationForm(forms.ModelForm):
+    class Meta:
+        model = Course
+        fields = ['title', 'description']
+
 @user_passes_test(is_instructor)
 def create_course(request):
-    # Здесь реализация для создания курса
-    pass
+    if request.method == 'POST':
+        form = CourseCreationForm(request.POST)
+        if form.is_valid():
+            course = form.save(commit=False)
+            course.instructor = request.user
+            course.save()
+            return redirect('course_list')
+    else:
+        form = CourseCreationForm()
+    return render(request, 'courses/create_course.html', {'form': form})
