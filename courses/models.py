@@ -7,6 +7,7 @@ from django.apps import AppConfig
 class Course(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+    image = models.ImageField(upload_to='course_images/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     instructor = models.ForeignKey(User, on_delete=models.CASCADE, related_name='instructor_courses')
 
@@ -17,6 +18,7 @@ class Lesson(models.Model):
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='lessons')
     title = models.CharField(max_length=200)
     content = models.TextField()
+    video = models.FileField(upload_to='lesson_videos/', blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

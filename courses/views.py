@@ -2,9 +2,11 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import user_passes_test, login_required
+from django.forms import inlineformset_factory
 from django import forms
 from django.contrib.auth.models import Group, User
-from .models import Course
+from .models import Course, Lesson
+from .forms import CourseCreationForm, LessonForm
 
 def home(request):
     # Представление для начальной публичной страницы
@@ -81,17 +83,25 @@ def is_instructor(user):
 class CourseCreationForm(forms.ModelForm):
     class Meta:
         model = Course
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'image']
 
 @user_passes_test(is_instructor)
 def create_course(request):
+    LessonFormSet = inlineformset_factory(Course, Lesson, form=LessonForm, extra=2, max_num=10)
     if request.method == 'POST':
-        form = CourseCreationForm(request.POST)
-        if form.is_valid():
-            course = form.save(commit=False)
+        course_form = CourseCreationForm(request.POST, request.FILES)
+        lesson_formset = LessonFormSet(request.POST, request.FILES)
+        if course_form.is_valid() and lesson_formset.is_valid():
+            course = course_form.save(commit=False)
             course.instructor = request.user
             course.save()
+            lesson_formset.instance = course
+            lesson_formset.save()
             return redirect('course_list')
     else:
-        form = CourseCreationForm()
-    return render(request, 'courses/create_course.html', {'form': form})
+        course_form = CourseCreationForm()
+        lesson_formset = LessonFormSet()
+    return render(request, 'courses/create_course.html', {
+        'course_form': course_form,
+        'lesson_formset': lesson_formset,
+    })

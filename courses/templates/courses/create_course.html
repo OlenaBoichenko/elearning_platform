@@ -1,12 +1,88 @@
 {% extends 'courses/layout.html' %}
+{% load custom_filters %}
 
-{% block title %}Create Course{% endblock %}
+{% block title %}Create a New Course{% endblock %}
 
 {% block content %}
-<h2>Create Course</h2>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">Create Course</button>
-</form>
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Create a New Course</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Форма курса -->
+                <div class="form-group mb-4">
+                    <label for="{{ course_form.title.id_for_label }}" class="font-weight-bold">Course Title</label>
+                    {{ course_form.title|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-4">
+                    <label for="{{ course_form.description.id_for_label }}" class="font-weight-bold">Course Description</label>
+                    {{ course_form.description|add_class:"form-control" }}
+                </div>
+                <div class="form-group mb-4">
+                    <label for="{{ course_form.image.id_for_label }}" class="font-weight-bold">Course Image</label>
+                    {{ course_form.image|add_class:"form-control-file" }}
+                </div>
+
+                <hr class="my-4">
+
+
+                <!-- Уроки курса -->
+                <h4 class="mb-4">Lessons</h4>
+                {{ lesson_formset.management_form }}
+                {% for form in lesson_formset %}
+                    <div class="card mb-4 shadow-sm">
+                        <div class="card-header">
+                            <h5>Lesson {{ forloop.counter }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="form-group">
+                                <label for="{{ form.title.id_for_label }}" class="font-weight-bold">Lesson Title</label>
+                                {{ form.title|add_class:"form-control" }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.content.id_for_label }}" class="font-weight-bold">Lesson Content</label>
+                                {{ form.content|add_class:"form-control" }}
+                            </div>
+                            <div class="form-group">
+                                <label for="{{ form.video.id_for_label }}" class="font-weight-bold">Lesson Video</label>
+                                {{ form.video|add_class:"form-control-file" }}
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+
+                <!-- Кнопка для добавления уроков -->
+                <button type="button" class="btn btn-secondary mb-3" id="add-lesson-btn">Add Another Lesson</button>
+
+                <!-- Кнопка для отправки -->
+                <button type="submit" class="btn btn-primary btn-block mt-3">Create Course</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const addLessonBtn = document.getElementById('add-lesson-btn');
+        addLessonBtn.addEventListener('click', function () {
+            const totalForms = document.getElementById('id_lessons-TOTAL_FORMS');
+            const currentCount = parseInt(totalForms.value);
+            if (currentCount < 10) {
+                totalForms.value = currentCount + 1;
+
+                const formTemplate = document.querySelector('.lesson-form').cloneNode(true);
+                formTemplate.querySelectorAll('input, textarea').forEach((input) => {
+                    input.value = '';
+                    const name = input.name.replace(/-\d+-/, `-${currentCount}-`);
+                    input.name = name;
+                    input.id = `id_${name}`;
+                });
+                document.querySelector('form').insertBefore(formTemplate, addLessonBtn);
+            }
+        });
+    });
+</script>
+
 {% endblock %}
