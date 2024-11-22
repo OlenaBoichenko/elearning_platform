@@ -11,7 +11,7 @@
             <form method="post" enctype="multipart/form-data">
                 {% csrf_token %}
 
-                <!-- Форма курса -->
+                <!-- Course form -->
                 <div class="form-group mb-4">
                     <label for="{{ course_form.title.id_for_label }}" class="font-weight-bold">Course Title</label>
                     {{ course_form.title|add_class:"form-control" }}
@@ -28,7 +28,7 @@
                 <hr class="my-4">
 
 
-                <!-- Уроки курса -->
+                <!-- Course lessons -->
                 <h4 class="mb-4">Lessons</h4>
                 {{ lesson_formset.management_form }}
                 {% for form in lesson_formset %}
@@ -53,10 +53,10 @@
                     </div>
                 {% endfor %}
 
-                <!-- Кнопка для добавления уроков -->
+                <!-- Button to add lessons -->
                 <button type="button" class="btn btn-secondary mb-3" id="add-lesson-btn">Add Another Lesson</button>
 
-                <!-- Кнопка для отправки -->
+                <!-- Submit button -->
                 <button type="submit" class="btn btn-primary btn-block mt-3">Create Course</button>
             </form>
         </div>

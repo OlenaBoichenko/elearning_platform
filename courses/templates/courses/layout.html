@@ -1,4 +1,3 @@
-<!-- courses/templates/courses/layout.html -->
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +10,7 @@
 </head>
 <body>
     <div class="d-flex">
-        <!-- Боковая панель -->
+        <!-- Sidebar -->
         <div class="sidebar bg-light">
             <div class="sidebar-header p-3">
                 <h4>Studdy</h4>
@@ -37,7 +36,7 @@
                 {% endif %}
             </ul>
         </div>
-        <!-- Основная часть страницы -->
+        <!-- Main part of the page -->
         <div class="content flex-grow-1">
             <div class="container mt-4">
                 {% block content %}{% endblock %}

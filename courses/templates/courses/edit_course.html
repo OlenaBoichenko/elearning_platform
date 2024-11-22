@@ -1,0 +1,58 @@
+{% extends 'courses/layout.html' %}
+{% load custom_filters %}
+
+{% block title %}Edit Course - {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <h2 class="card-title text-center mb-4">Edit Course - {{ course.title }}</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <!-- Course form -->
+                <div class="form-group">
+                    {{ course_form.title.label_tag }}
+                    {{ course_form.title|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ course_form.description.label_tag }}
+                    {{ course_form.description|add_class:"form-control" }}
+                </div>
+                <div class="form-group">
+                    {{ course_form.image.label_tag }}
+                    {{ course_form.image|add_class:"form-control-file" }}
+                </div>
+
+                <hr>
+
+                <!-- Course lessons -->
+                <h4 class="mb-3">Lessons</h4>
+                {{ lesson_formset.management_form }}
+                {% for form in lesson_formset %}
+                    {{ form.id }} 
+                    <div class="lesson-form">
+                        <div class="form-group">
+                            {{ form.title.label_tag }}
+                            {{ form.title|add_class:"form-control" }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.content.label_tag }}
+                            {{ form.content|add_class:"form-control" }}
+                        </div>
+                        <div class="form-group">
+                            {{ form.video.label_tag }}
+                            {{ form.video|add_class:"form-control-file" }}
+                        </div>
+                    </div>
+                    <hr>
+                {% endfor %}
+
+                <!-- Submit button -->
+                <button type="submit" class="btn btn-primary btn-block mt-3">Save Changes</button>
+            </form>
+        </div>
+    </div>
+</div>
+{% endblock %}

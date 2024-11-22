@@ -9,7 +9,6 @@ from .models import Course, Lesson
 from .forms import CourseCreationForm, LessonForm
 
 def home(request):
-    # Представление для начальной публичной страницы
     return render(request, 'courses/home.html')
 
 def course_list(request):
@@ -87,7 +86,7 @@ class CourseCreationForm(forms.ModelForm):
 
 @user_passes_test(is_instructor)
 def create_course(request):
-    LessonFormSet = inlineformset_factory(Course, Lesson, form=LessonForm, extra=2, max_num=10)
+    LessonFormSet = inlineformset_factory(Course, Lesson, form=LessonForm, can_delete=True, extra=2, max_num=10)
     if request.method == 'POST':
         course_form = CourseCreationForm(request.POST, request.FILES)
         lesson_formset = LessonFormSet(request.POST, request.FILES)
@@ -104,4 +103,39 @@ def create_course(request):
     return render(request, 'courses/create_course.html', {
         'course_form': course_form,
         'lesson_formset': lesson_formset,
+    })
+    
+@login_required
+@user_passes_test(is_instructor)
+def manage_courses(request):
+    courses = Course.objects.filter(instructor=request.user)
+    return render(request, 'courses/manage_courses.html', {'courses': courses})
+
+@login_required
+@user_passes_test(is_instructor)
+def edit_course(request, pk):
+    course = get_object_or_404(Course, pk=pk, instructor=request.user)
+    LessonFormSet = inlineformset_factory(Course, Lesson, form=LessonForm, extra=2, max_num=10)
+
+    if request.method == 'POST':
+        course_form = CourseCreationForm(request.POST, request.FILES, instance=course)
+        lesson_formset = LessonFormSet(request.POST, request.FILES, instance=course)
+
+        if course_form.is_valid() and lesson_formset.is_valid():
+            course_form.save()
+            lesson_formset.save()
+            print("Course and lessons updated successfully.")
+            return redirect('manage_courses')
+        else:
+            print("Errors in Course Form:", course_form.errors)
+            print("Errors in Lesson Formset:", lesson_formset.errors)
+
+    else:
+        course_form = CourseCreationForm(instance=course)
+        lesson_formset = LessonFormSet(instance=course)
+
+    return render(request, 'courses/edit_course.html', {
+        'course_form': course_form,
+        'lesson_formset': lesson_formset,
+        'course': course,
     })

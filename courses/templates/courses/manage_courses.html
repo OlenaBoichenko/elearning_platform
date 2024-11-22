@@ -1,0 +1,27 @@
+{% extends 'courses/layout.html' %}
+
+{% block title %}Manage Your Courses{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Manage Your Courses</h2>
+    <div class="row">
+        {% for course in courses %}
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    {% if course.image %}
+                        <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                    {% endif %}
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        <p class="card-text">{{ course.description|truncatewords:15 }}</p>
+                        <a href="{% url 'edit_course' course.pk %}" class="btn btn-primary">Edit Course</a>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            <p>No courses available. Create your first course now!</p>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
