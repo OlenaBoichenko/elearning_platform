@@ -1,15 +1,24 @@
 {% extends 'courses/layout.html' %}
+{% load static %}
 
 {% block title %}{{ course.title }}{% endblock %}
 
 {% block content %}
-<h1>{{ course.title }}</h1>
-<p>{{ course.description }}</p>
-<h2>Lessons</h2>
-<ul>
-    {% for lesson in course.lessons.all %}
-        <li>{{ lesson.title }}</li>
-    {% endfor %}
-</ul>
-<a href="{% url 'course_list' %}">Back to Courses</a>
+<div class="container mt-5">
+    <h2>{{ course.title }}</h2>
+    <p>{{ course.description }}</p>
+
+    <div class="lessons mt-4">
+        <h4>Lessons</h4>
+        <ul class="list-group">
+            {% for lesson in course.lessons.all %}
+            <li class="list-group-item">
+                <a href="#" class="lesson-link" data-course-id="{{ course.id }}" data-lesson-id="{{ lesson.id }}">{{ lesson.title }}</a>
+            </li>
+            {% endfor %}
+        </ul>
+    </div>
+</div>
+
+<script src="{% static 'courses/lessons.js' %}"></script>
 {% endblock %}

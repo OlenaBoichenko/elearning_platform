@@ -1,0 +1,29 @@
+{% extends 'courses/layout.html' %}
+{% load static %}
+
+{% block title %}My Courses{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>My Courses</h2>
+    <div class="row mt-4">
+        {% for course in courses %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        {% if course.image %}
+                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                        {% endif %}
+                        <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">View Course</a>
+                        {% if course.enrollments.first.is_completed %}
+                            <span class="badge badge-success">Completed</span>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

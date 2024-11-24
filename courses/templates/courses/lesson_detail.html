@@ -1,0 +1,50 @@
+{% extends 'courses/layout.html' %}
+{% load static %}
+{% block title %}Lesson Detail{% endblock %}
+{% block content %}
+<div class="container mt-5" id="course-info"
+    data-total-lessons="{{ total_lessons|default:0 }}"
+    data-completed-lessons="{{ completed_lessons|default:0 }}">
+  <div class="card shadow-sm">
+    <div class="card-body">
+      <h2 class="card-title text-center mb-4">{{ lesson.title }}</h2>
+      <p class="card-text">{{ lesson.content }}</p>
+
+      {% if lesson.video %}
+      <div class="video-container mt-4 text-center">
+        <video controls class="w-75">
+          <source src="{{ lesson.video.url }}" type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+      </div>
+      {% endif %}
+
+      <div class="text-center mt-5">
+        <button
+    id="complete-lesson-button"
+    class="btn btn-success"
+    data-lesson-id="{{ lesson.id }}"
+    data-course-id="{{ lesson.course.id }}"
+    {% if is_lesson_completed %}disabled{% endif %}
+  >
+    {% if is_lesson_completed %}Completed{% else %}Complete Lesson{% endif %}
+  </button>
+      </div>
+    </div>
+  </div>
+  <div class="progress mt-4">
+    <div
+      class="progress-bar"
+      role="progressbar"
+      style="width: {{ progress }}%;"
+      aria-valuenow="{{ progress }}"
+      aria-valuemin="0"
+      aria-valuemax="100"
+    >
+    </div>
+  </div>
+  
+</div>
+
+<script src="{% static 'courses/lesson_detail.js' %}"></script>
+{% endblock %}

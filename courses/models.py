@@ -27,10 +27,18 @@ class Lesson(models.Model):
 class Enrollment(models.Model):
     student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='enrollments')
     course = models.ForeignKey(Course, on_delete=models.CASCADE, related_name='enrollments')
+    progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     enrolled_at = models.DateTimeField(auto_now_add=True)
+    is_completed = models.BooleanField(default=False)
 
     def __str__(self):
         return f"{self.student.username} enrolled in {self.course.title}"
+    
+    def check_course_completion(self):
+        total_lessons = self.course.lessons.count()
+        completed_lessons = LessonCompletion.objects.filter(student=self.student, lesson__course=self.course).count()
+        self.is_completed = total_lessons == completed_lessons
+        self.save()
     
 class CoursesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
@@ -40,3 +48,11 @@ class CoursesConfig(AppConfig):
         from django.contrib.auth.models import Group
         Group.objects.get_or_create(name='Teachers')
         Group.objects.get_or_create(name='Students')
+
+class LessonCompletion(models.Model):
+    student = models.ForeignKey(User, on_delete=models.CASCADE, related_name='completed_lessons')
+    lesson = models.ForeignKey('Lesson', on_delete=models.CASCADE, related_name='completions')
+    completed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.student.username} completed {self.lesson.title}"

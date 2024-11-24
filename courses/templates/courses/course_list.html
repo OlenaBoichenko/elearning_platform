@@ -83,6 +83,28 @@
                 </div>
             </div>
 
+            <!-- Buttons for courses -->
+            <div class="row mt-4">
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">Available Courses</h5>
+                            <p class="card-text">Browse all available courses and enroll in those you are interested in.</p>
+                            <a href="{% url 'available_courses' %}" class="btn btn-primary">View Available Courses</a>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">My Courses</h5>
+                            <p class="card-text">View the courses that you have enrolled in.</p>
+                            <a href="{% url 'my_courses' %}" class="btn btn-primary">View My Courses</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
             <!-- Schedule for students -->
             <div class="row mt-4">
                 <div class="col-md-12">

@@ -1,0 +1,39 @@
+{% extends 'courses/layout.html' %}
+
+{% block title %}Student Dashboard{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Available Courses</h2>
+    <div class="row">
+        {% for course in available_courses %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ course.title }}</h5>
+                    <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                    <a href="{% url 'join_course' course.id %}" class="btn btn-primary">Join Course</a>
+                    <a href="{% url 'available_courses' %}" class="btn btn-primary">View Available Courses</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    <h2>Enrolled Courses</h2>
+    <div class="row">
+        {% for enrollment in enrolled_courses %}
+        <div class="col-md-4">
+            <div class="card mb-4 shadow-sm">
+                <img src="{{ enrollment.course.image.url }}" class="card-img-top" alt="{{ enrollment.course.title }}">
+                <div class="card-body">
+                    <h5 class="card-title">{{ enrollment.course.title }}</h5>
+                    <a href="{% url 'course_detail' enrollment.course.id %}" class="btn btn-secondary">View Course</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}

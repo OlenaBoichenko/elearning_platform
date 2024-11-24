@@ -1,0 +1,25 @@
+{% extends 'courses/layout.html' %}
+
+{% block title %}Available Courses{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Available Courses</h2>
+    <div class="row mt-4">
+        {% for course in courses %}
+            <div class="col-md-4 mb-4">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">{{ course.title }}</h5>
+                        {% if course.image %}
+                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                        {% endif %}
+                        <p class="card-text">{{ course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'enroll_course' course.id %}" class="btn btn-primary">Enroll Now</a>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
