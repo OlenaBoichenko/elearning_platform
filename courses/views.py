@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import user_passes_test, login_required
 from django.forms import inlineformset_factory
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.urls import reverse
 from django import forms
 from django.contrib.auth.models import Group, User
 from .models import Course, Lesson, Enrollment, LessonCompletion
@@ -20,7 +21,13 @@ def course_list(request):
 
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
-    return render(request, 'courses/course_detail.html', {'course': course})
+    if not Enrollment.objects.filter(student=request.user, course=course).exists():
+        return redirect('available_courses')
+    
+    return render(request, 'courses/course_detail.html', {
+        'course': course,
+        'back_url': reverse('my_courses')
+        })
 
 def register(request):
     if request.method == 'POST':
@@ -151,6 +158,7 @@ def student_dashboard(request):
     return render(request, 'courses/student_dashboard.html', {
         'available_courses': available_courses,
         'enrolled_courses': enrolled_courses,
+        'back_url': reverse('home')
     })
 
 @login_required
@@ -179,7 +187,11 @@ def enroll_course(request, pk):
 def my_courses(request):
     enrollments = Enrollment.objects.filter(student=request.user)
     courses = [enrollment.course for enrollment in enrollments]
-    return render(request, 'courses/my_courses.html', {'courses': courses})
+    
+    return render(request, 'courses/my_courses.html', {
+        'courses': courses,
+        'back_url': reverse('student_dashboard')
+        })
 
 
 @login_required
@@ -204,7 +216,8 @@ def lesson_detail(request, course_id, lesson_id):
         'total_lessons': total_lessons,
         'completed_lessons': completed_lessons,
         'progress': progress,
-        'is_lesson_completed': is_lesson_completed
+        'is_lesson_completed': is_lesson_completed,
+        'back_url': reverse('course_detail', kwargs={'pk': course_id})
     })
 
 @csrf_exempt
