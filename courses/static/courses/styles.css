@@ -26,3 +26,7 @@ body {
 .header {
     padding: 40px;
 }
+
+.logo {
+    width: 80px;
+}
