@@ -18,4 +18,6 @@ urlpatterns = [
     path('my_courses/', views.my_courses, name='my_courses'),
     path('course/<int:course_id>/lesson/<int:lesson_id>/', views.lesson_detail, name='lesson_detail'),
     path('complete_lesson/<int:lesson_id>/', views.complete_lesson, name='complete_lesson'),
+    path('course/<int:course_id>/report/', views.course_report, name='course_report'),
+    path('course/reports/', views.course_reports, name='course_reports'),
 ]

@@ -1,0 +1,31 @@
+{% extends 'courses/layout.html' %}
+
+{% block title %}Course Report: {{ course.title }}{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Course Report: {{ course.title }}</h2>
+
+    <p><strong>Student:</strong> {{ enrollment.student.username }}</p>
+    <p><strong>Rating:</strong> {{ enrollment.rating }}%</p>
+
+    <h4>Progress</h4>
+    <p>You have completed {{ enrollment.progress }}% of this course.</p>
+
+    <h4>Course Details</h4>
+    <ul>
+        {% for lesson_status in lesson_statuses %}
+            <li>
+                {{ lesson_status.lesson.title }} - 
+                {% if lesson_status.is_completed %}
+                    Completed
+                {% else %}
+                    Not Completed
+                {% endif %}
+            </li>
+        {% endfor %}
+    </ul>
+
+    <a href="{% url 'my_courses' %}" class="btn btn-secondary mt-4">Back to My Courses</a>
+</div>
+{% endblock %}

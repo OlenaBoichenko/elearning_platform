@@ -7,17 +7,17 @@
 <div class="container mt-5">
     <h2>My Courses</h2>
     <div class="row mt-4">
-        {% for course in courses %}
+        {% for enrollment in enrollments %}
             <div class="col-md-4 mb-4">
                 <div class="card">
                     <div class="card-body">
-                        <h5 class="card-title">{{ course.title }}</h5>
-                        {% if course.image %}
-                            <img src="{{ course.image.url }}" class="card-img-top" alt="{{ course.title }}">
+                        <h5 class="card-title">{{ enrollment.course.title }}</h5>
+                        {% if enrollment.course.image %}
+                            <img src="{{ enrollment.course.image.url }}" class="card-img-top" alt="{{ enrollment.course.title }}">
                         {% endif %}
-                        <p class="card-text">{{ course.description|truncatewords:20 }}</p>
-                        <a href="{% url 'course_detail' course.id %}" class="btn btn-primary">View Course</a>
-                        {% if course.enrollments.first.is_completed %}
+                        <p class="card-text">{{ enrollment.course.description|truncatewords:20 }}</p>
+                        <a href="{% url 'course_detail' enrollment.course.id %}" class="btn btn-primary">View Course</a>
+                        {% if enrollment.is_completed %}
                             <span class="badge badge-success">Completed</span>
                         {% endif %}
                     </div>

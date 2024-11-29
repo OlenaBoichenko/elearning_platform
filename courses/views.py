@@ -17,7 +17,11 @@ def home(request):
 def course_list(request):
     courses = Course.objects.all()
     is_instructor = request.user.groups.filter(name='Teachers').exists() if request.user.is_authenticated else False
-    return render(request, 'courses/course_list.html', {'courses': courses, 'is_instructor': is_instructor})
+    
+    return render(request, 'courses/course_list.html', {
+        'courses': courses, 
+        'is_instructor': is_instructor,
+        })
 
 def course_detail(request, pk):
     course = get_object_or_404(Course, pk=pk)
@@ -155,6 +159,7 @@ def student_dashboard(request):
     # Display all available courses for students
     available_courses = Course.objects.exclude(enrollments__student=request.user)
     enrolled_courses = Enrollment.objects.filter(student=request.user)
+        
     return render(request, 'courses/student_dashboard.html', {
         'available_courses': available_courses,
         'enrolled_courses': enrolled_courses,
@@ -189,6 +194,7 @@ def my_courses(request):
     courses = [enrollment.course for enrollment in enrollments]
     
     return render(request, 'courses/my_courses.html', {
+        'enrollments': enrollments,
         'courses': courses,
         'back_url': reverse('student_dashboard')
         })
@@ -242,3 +248,32 @@ def complete_lesson(request, lesson_id):
     enrollment.save()
 
     return JsonResponse({'message': 'Lesson completed successfully!'})
+
+@login_required
+def course_report(request, course_id):
+    enrollment = get_object_or_404(Enrollment, student=request.user, course__id=course_id)
+    lessons = Lesson.objects.filter(course=enrollment.course)
+
+    #Information about the completion of each lesson
+    lesson_statuses = []
+    for lesson in lessons:
+        is_completed = LessonCompletion.objects.filter(student=request.user, lesson=lesson).exists()
+        lesson_statuses.append({
+            'lesson': lesson,
+            'is_completed': is_completed
+        })
+
+    return render(request, 'courses/course_report.html', {
+        'enrollment': enrollment,
+        'course': enrollment.course,
+        'lesson_statuses': lesson_statuses 
+    })
+    
+@login_required
+def course_reports(request):
+    # All courses in which the student is enrolled and completed
+    enrollments = Enrollment.objects.filter(student=request.user, is_completed=True)
+
+    return render(request, 'courses/course_reports.html', {
+        'enrollments': enrollments,
+    })

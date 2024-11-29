@@ -1,0 +1,26 @@
+{% extends 'courses/layout.html' %}
+
+{% block title %}Course Reports{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h2>Your Completed Course Reports</h2>
+    <div class="row mt-4">
+        {% if enrollments %}
+            {% for enrollment in enrollments %}
+                <div class="col-md-4 mb-4">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ enrollment.course.title }}</h5>
+                            <p class="card-text">Rating: {{ enrollment.rating }}</p>
+                            <a href="{% url 'course_report' course_id=enrollment.course.id %}" class="btn btn-primary">View Report</a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>No completed courses available for reporting.</p>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

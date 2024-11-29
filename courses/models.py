@@ -30,6 +30,7 @@ class Enrollment(models.Model):
     progress = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
     enrolled_at = models.DateTimeField(auto_now_add=True)
     is_completed = models.BooleanField(default=False)
+    rating = models.DecimalField(max_digits=5, decimal_places=2, default=0.0)
 
     def __str__(self):
         return f"{self.student.username} enrolled in {self.course.title}"
@@ -38,7 +39,17 @@ class Enrollment(models.Model):
         total_lessons = self.course.lessons.count()
         completed_lessons = LessonCompletion.objects.filter(student=self.student, lesson__course=self.course).count()
         self.is_completed = total_lessons == completed_lessons
+        if self.is_completed:
+            self.rating = self.calculate_rating()
+            print(f"Course {self.course.title} is completed by {self.student.username}")
         self.save()
+        
+    def calculate_rating(self):
+        #Rating calculation logic
+        total_lessons = self.course.lessons.count()
+        completed_lessons = LessonCompletion.objects.filter(student=self.student, lesson__course=self.course).count()
+        rating = (completed_lessons / total_lessons) * 100 if total_lessons > 0 else 0
+        return rating
     
 class CoursesConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
