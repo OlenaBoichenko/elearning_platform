@@ -277,3 +277,16 @@ def course_reports(request):
     return render(request, 'courses/course_reports.html', {
         'enrollments': enrollments,
     })
+    
+
+#All courses of the teacher, to which students are subscribed
+@login_required
+@user_passes_test(is_instructor)
+def view_enrollments(request):
+    instructor_courses = request.user.instructor_courses.all()
+
+    enrollments = Enrollment.objects.filter(course__in=instructor_courses)
+
+    return render(request, 'courses/view_enrollments.html', {
+        'enrollments': enrollments,
+    })

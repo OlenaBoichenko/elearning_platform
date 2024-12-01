@@ -14,7 +14,7 @@
 
             <!-- Section for teachers -->
             <div class="row mt-4">
-                <div class="col-md-4">
+                <div class="col-md-4 mb-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Create a New Course</h5>
@@ -23,7 +23,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mb-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Manage Your Courses</h5>
@@ -32,12 +32,12 @@
                         </div>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-4 mb-2">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">View Enrollments</h5>
                             <p class="card-text">Track students who are enrolled in your courses.</p>
-                            <a href="#" class="btn btn-primary">View Enrollments</a>
+                            <a href="{% url 'all_enrollments' %}" class="btn btn-primary">View All Enrollments</a>
                         </div>
                     </div>
                 </div>
@@ -46,27 +46,25 @@
             <!-- Welcome banner for students -->
             <header class="p-4 bg-primary text-white">
                 <h1>Welcome back, {{ user.username }}</h1>
-                <p class="lead">You've learned 70% of your goal this week! Keep it up and improve your progress.</p>
+                <p class="lead">You've learned a lot this week! Keep it up and improve your progress.</p>
             </header>
 
             <!-- Section for students -->
             <div class="row mt-4">
                 <!-- Attendance card -->
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card p-4">
                         <div class="card-body">
                             <h5 class="card-title">Attendance</h5>
-                            <p class="card-text">19/20</p>
                             <p>Well done! You're attending all lessons. Keep going!</p>
                         </div>
                     </div>
                 </div>
                 <!-- Homework card -->
                 <div class="col-md-4 mb-4">
-                    <div class="card">
+                    <div class="card p-4">
                         <div class="card-body">
                             <h5 class="card-title">Homework</h5>
-                            <p class="card-text">53/56</p>
                             <p>Don't forget about your next homework.</p>
                         </div>
                     </div>
@@ -85,7 +83,7 @@
 
             <!-- Buttons for courses -->
             <div class="row mt-4">
-                <div class="col-md-6">
+                <div class="col-md-6 mb-4">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Available Courses</h5>
@@ -95,7 +93,7 @@
                     </div>
                 </div>
                 <div class="col-md-6">
-                    <div class="card">
+                    <div class="card p-2">
                         <div class="card-body">
                             <h5 class="card-title">My Courses</h5>
                             <p class="card-text">View the courses that you have enrolled in.</p>

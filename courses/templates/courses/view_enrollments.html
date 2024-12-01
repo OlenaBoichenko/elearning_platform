@@ -1,0 +1,37 @@
+{% extends 'courses/layout.html' %}
+
+{% block title %}Enrollments{% endblock %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4">Enrollments</h1>
+    {% if enrollments %}
+        <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+            {% for enrollment in enrollments %}
+                <div class="col">
+                    <div class="card h-100 shadow-sm">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <i class="bi bi-person-circle"></i>
+                                {{ enrollment.student.username }}
+                            </h5>
+                            <p class="card-text">
+                                <strong>Course:</strong> {{ enrollment.course.title }} <br>
+                                <strong>Enrolled At:</strong> {{ enrollment.enrolled_at|date:"F d, Y H:i" }}
+                            </p>
+                        </div>
+                        <div class="card-footer">
+                            <small class="text-muted">Enrollment ID: {{ enrollment.id }}</small>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="alert alert-warning" role="alert">
+            <i class="bi bi-exclamation-circle"></i> No students have enrolled in your courses yet.
+        </div>
+    {% endif %}
+</div>
+{% endblock %}
+
