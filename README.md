@@ -25,7 +25,7 @@ The project includes several complex technical aspects:
 ## **Libraries and packages**
 The project uses the following packages, which are listed in `requirements.txt`:
 - `Django>=3.2,<4.0`
-- `Pillow>=8.2.0,<9.0`
+- `Pillow>=10.2.0,<11.2`
 
 ## **File structure**
 - **`/project_root/`** — Main project directory
