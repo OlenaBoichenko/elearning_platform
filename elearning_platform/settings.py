@@ -80,7 +80,7 @@ WSGI_APPLICATION = 'elearning_platform.wsgi.application'
 
 
 DATABASES = {
-    'default': dj_database_url.config(default=os.getenv('postgresql://elearning_platform_data_user:FEv2EeZu05qI7tB1IEhtE9wz7WqWfSR1@dpg-ct94ib0gph6c739s5q4g-a/elearning_platform_data', 'sqlite:///db.sqlite3'))
+    'default': dj_database_url.config(default=os.getenv('DATABASE_URL', 'sqlite:///db.sqlite3'))
 }
 
 
