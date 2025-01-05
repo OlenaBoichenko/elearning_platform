@@ -41,8 +41,8 @@ The project uses the following packages, which are listed in `requirements.txt`:
 ## **How to launch the application**
 1. Clone the repository:
    ```bach
-   git clone <repository_url>
-   cd <project_name>
+   git clone https://github.com/me50/OlenaBoichenko.git
+   cd elearning_platform
 2. Install all dependencies:
    ```bach
    pip install -r requirements.txt
